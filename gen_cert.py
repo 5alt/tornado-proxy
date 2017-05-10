@@ -65,7 +65,7 @@ def gen_signed_cert(domain,
                 # Serial Generation - Serial number must be unique for each certificate,
                 # so serial is generated based on domain name
                 md5_hash = hashlib.md5()
-                md5_hash.update(domain)
+                md5_hash.update(str.encode(domain))
                 serial = int(md5_hash.hexdigest(), 36)
 
                 # The CA stuff is loaded from the same folder as this script
@@ -93,7 +93,7 @@ def gen_signed_cert(domain,
 
                 # The key and cert files are dumped and their paths are returned
 
-                domain_cert = open(cert_path, "w")
+                domain_cert = open(cert_path, "wb")
                 domain_cert.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
                 print(("[*] Generated signed certificate for %s" % (domain)))
     return key_path, cert_path

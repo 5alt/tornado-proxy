@@ -1,6 +1,6 @@
 # tornado-proxy
 
-tornado-proxy 是基于 tornado 实现的 HTTP/HTTPS 代理服务器。
+tornado-proxy 是基于 tornado 实现的 HTTP/HTTPS 代理服务器，支持 python2 和 python3。
 
 本程序在 owtf-proxy 的基础上修改而成，整合了 owtf-proxy 和 tornado-proxy 对 HTTPS 的两种不同方式的支持，参考 proxy2 中对请求和响应的拦截与处理方式。
 
@@ -9,16 +9,21 @@ tornado-proxy 是基于 tornado 实现的 HTTP/HTTPS 代理服务器。
 * 支持对 HTTPS 请求的透明代理和动态伪造证书拦截流量两种方式
 * 高性能
 * 自定义对请求和响应的处理
+* 可配置此代理服务器的代理服务器
 
 ## 依赖
 
-* OpenSSL
+* pyopenssl
 * tornado
 * pycurl
+
+`pip install -r requirements.txt`
 
 在 osx 下 pip 安装 pycurl 报编译错误，加上环境变量 `archflags -arch x86_64` 即可。
 
 `sudo env ARCHFLAGS="-arch x86_64" pip install pycurl`
+
+ubuntu 下需先安装 `libcurl4-openssl-dev`
 
 ## 开启 HTTPS 拦截
 
@@ -40,5 +45,7 @@ tornado-proxy 是基于 tornado 实现的 HTTP/HTTPS 代理服务器。
 ## 参考资料
 
 https://github.com/tunnelshade/owtf-proxy
+
 https://github.com/senko/tornado-proxy
+
 https://github.com/inaz2/proxy2

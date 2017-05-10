@@ -223,7 +223,7 @@ class ProxyHandler(tornado.web.RequestHandler):
         try:
             s = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0))
             upstream = tornado.iostream.SSLIOStream(s)
-            upstream.connect((host, int(port)), start_tunnel)
+            upstream.connect((host, int(port)), start_tunnel, host)
         except Exception:
             print(("[!] Dropping CONNECT request to " + self.request.uri))
             self.write(b"404 Not Found :P")
