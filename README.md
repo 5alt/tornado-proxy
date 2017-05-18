@@ -23,7 +23,7 @@ tornado-proxy 是基于 tornado 实现的 HTTP/HTTPS 代理服务器，支持 py
 
 `sudo env ARCHFLAGS="-arch x86_64" pip install pycurl`
 
-ubuntu 下需先安装 `libcurl4-openssl-dev`
+ubuntu 下需先安装 `libssl-dev` 和 `libcurl4-openssl-dev`
 
 ## 开启 HTTPS 拦截
 
