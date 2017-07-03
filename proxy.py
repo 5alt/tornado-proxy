@@ -58,13 +58,15 @@ class ProxyHandler(tornado.web.RequestHandler):
     cacert = join_with_script_dir('ca.crt')
     certdir = join_with_script_dir('certs/')
 
+    response_body = None
+
     def request_handler(self, request):
         pass
 
-    def response_handler(self, request, response):
+    def response_handler(self, request, response, response_body):
         pass
 
-    def save_handler(self, request, response):
+    def save_handler(self, request, response, response_body):
         pass
 
     def set_status(self, status_code, reason=None):
@@ -104,7 +106,10 @@ class ProxyHandler(tornado.web.RequestHandler):
         def handle_response(response):
 
             # Hook response
-            self.response_handler(self.request, response)
+            ret = self.response_handler(self.request, response, self.response_body)
+            if ret:
+                self.response_body = ret
+                self.write(self.response_body)
 
             self.set_status(response.code)
             for header, value in list(response.headers.items()):
@@ -119,12 +124,15 @@ class ProxyHandler(tornado.web.RequestHandler):
             self.finish()
 
             # Save request and response
-            self.save_handler(self.request, response)
+            self.save_handler(self.request, response, self.response_body)
 
         # This function is a callback when a small chunk is recieved
         def handle_data_chunk(data):
             if data:
-                self.write(data)
+                if not self.response_body:
+                    self.response_body = data
+                else:
+                    self.response_body += data
 
         # Hook request
         self.request_handler(self.request)
@@ -286,7 +294,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
 class ProxyServer(object):
 
-    def __init__(self, inbound_ip="127.0.0.1", inbound_port=8888, outbound_ip=None, outbound_port=None):
+    def __init__(self, inbound_ip="0.0.0.0", inbound_port=8088, outbound_ip=None, outbound_port=None):
 
         self.application = tornado.web.Application(handlers=[(r".*", ProxyHandler)], debug=False, gzip=True)
         self.application.inbound_ip = inbound_ip
