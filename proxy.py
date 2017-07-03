@@ -109,6 +109,7 @@ class ProxyHandler(tornado.web.RequestHandler):
             ret = self.response_handler(self.request, response, self.response_body)
             if ret:
                 self.response_body = ret
+            if self.response_body:
                 self.write(self.response_body)
 
             self.set_status(response.code)
@@ -302,7 +303,7 @@ class ProxyServer(object):
         self.application.outbound_ip = outbound_ip
         self.application.outbound_port = outbound_port
         global server
-        server = tornado.httpserver.HTTPServer(self.application)
+        server = tornado.httpserver.HTTPServer(self.application, decompress_request=True)
         self.server = server
 
     # "0" equals the number of cores present in a machine
