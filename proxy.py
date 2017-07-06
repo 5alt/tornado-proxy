@@ -105,6 +105,8 @@ class ProxyHandler(tornado.web.RequestHandler):
         # This method will be improvised with more headers from original responses
         def handle_response(response):
 
+            self.response_body = response.body if response.body else self.response_body
+
             # Hook response
             ret = self.response_handler(self.request, response, self.response_body)
             if ret:
