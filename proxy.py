@@ -297,9 +297,9 @@ class ProxyHandler(tornado.web.RequestHandler):
 
 class ProxyServer(object):
 
-    def __init__(self, inbound_ip="0.0.0.0", inbound_port=8088, outbound_ip=None, outbound_port=None):
+    def __init__(self, handler,inbound_ip="0.0.0.0", inbound_port=8088, outbound_ip=None, outbound_port=None):
 
-        self.application = tornado.web.Application(handlers=[(r".*", ProxyHandler)], debug=False, gzip=True)
+        self.application = tornado.web.Application(handlers=[(r".*", handler)], debug=False, gzip=True)
         self.application.inbound_ip = inbound_ip
         self.application.inbound_port = inbound_port
         self.application.outbound_ip = outbound_ip
@@ -312,7 +312,7 @@ class ProxyServer(object):
     def start(self, instances=0):
         try:
             #total = Profiler()
-            #app = tornado.web.Application(handlers=[(r".*", ProxyHandler)], debug=False, gzip=True)
+            #app = tornado.web.Application(handlers=[(r".*", handler)], debug=False, gzip=True)
             #global http_server  # Easy to add SSLIOStream later in the request handlers
             #http_server = tornado.httpserver.HTTPServer(app)
             self.server.bind(self.application.inbound_port, address=self.application.inbound_ip)
@@ -330,7 +330,7 @@ class ProxyServer(object):
 
 if __name__ == "__main__":
     try:
-        proxy = ProxyServer()
+        proxy = ProxyServer(ProxyHandler)
         proxy.start()
     except KeyboardInterrupt:
         proxy.stop()
