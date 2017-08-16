@@ -44,19 +44,15 @@ import os
 
 from socket_wrapper import wrap_socket
 
-def join_with_script_dir(path):
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), path)
-
-
 class ProxyHandler(tornado.web.RequestHandler):
     """
     This RequestHandler processes all the requests that the application recieves
     """
     SUPPORTED_METHODS = ['GET', 'POST', 'CONNECT', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
 
-    cakey = join_with_script_dir('ca.key')
-    cacert = join_with_script_dir('ca.crt')
-    certdir = join_with_script_dir('certs/')
+    cakey = 'ca.key'
+    cacert = 'ca.crt'
+    certdir = 'certs/'
 
     response_body = None
 

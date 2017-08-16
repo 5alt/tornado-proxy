@@ -78,18 +78,25 @@ def gen_signed_cert(domain,
                 #key.generate_key(crypto.TYPE_RSA, 2048)
 
                 cert = crypto.X509()
+                cert.set_version(3-1) # version 3, starts at 0
                 cert.get_subject().C = "IN"
                 cert.get_subject().ST = "AP"
                 cert.get_subject().L = "127.0.0.1"
                 cert.get_subject().O = "TProxy"
-                cert.get_subject().OU = "Inbound-Proxy"
-                cert.get_subject().CN = domain
+                cert.get_subject().OU = domain
                 cert.gmtime_adj_notBefore(0)
                 cert.gmtime_adj_notAfter(365 * 24 * 60 * 60)
                 cert.set_serial_number(serial)
                 cert.set_issuer(ca_cert.get_subject())
+                
+                cert.add_extensions([
+                    crypto.X509Extension(
+                        "subjectAltName", True, "DNS: "+domain
+                   )
+                ])
+                
                 cert.set_pubkey(key)
-                cert.sign(ca_key, "sha1")
+                cert.sign(ca_key, "sha256")
 
                 # The key and cert files are dumped and their paths are returned
 
