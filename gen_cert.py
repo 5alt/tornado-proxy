@@ -33,7 +33,7 @@ from OpenSSL import crypto
 import os
 import hashlib
 
-from filelock import FileLock
+from .filelock import FileLock
 
 
 def gen_signed_cert(domain,
@@ -91,7 +91,7 @@ def gen_signed_cert(domain,
                 
                 cert.add_extensions([
                     crypto.X509Extension(
-                        "subjectAltName", True, "DNS: "+domain
+                        b"subjectAltName", True, b"DNS: "+domain.encode()
                    )
                 ])
                 
