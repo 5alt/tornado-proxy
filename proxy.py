@@ -229,7 +229,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
         try:
             s = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0))
-            upstream = tornado.iostream.SSLIOStream(s)
+            upstream = tornado.iostream.SSLIOStream(s, ssl_options=dict(cert_reqs=ssl.CERT_NONE))
             upstream.connect((host, int(port)), start_tunnel, host)
         except Exception:
             print(("[!] Dropping CONNECT request to " + self.request.uri))
