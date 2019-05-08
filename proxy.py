@@ -145,7 +145,7 @@ class ProxyHandler(tornado.web.RequestHandler):
             url = self.request.protocol + "://" + self.request.host + self.request.uri
 
         # More headers are to be removed
-        for header in ('Connection', 'Pragma', 'Cache-Control'):
+        for header in ('Connection', 'Pragma', 'Cache-Control', 'Content-Length'):
             try:
                 del self.request.headers[header]
             except:
