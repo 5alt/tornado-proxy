@@ -19,9 +19,16 @@ tornado-proxy 是基于 tornado 实现的 HTTP/HTTPS 代理服务器，支持 py
 
 `pip install -r requirements.txt`
 
-在 osx 下 pip 安装 pycurl 报编译错误，加上环境变量 `archflags -arch x86_64` 即可。
+pycurl 安装参考 https://wfuzz.readthedocs.io/en/latest/user/installation.html
 
-`sudo env ARCHFLAGS="-arch x86_64" pip install pycurl`
+mac os 下
+
+```
+brew install openssl
+brew install curl-openssl
+export PATH="/usr/local/opt/curl-openssl/bin:$PATH"
+PYCURL_SSL_LIBRARY=openssl LDFLAGS="-L/usr/local/opt/openssl/lib" CPPFLAGS="-I/usr/local/opt/openssl/include" pip install --no-cache-dir pycurl
+```
 
 ubuntu 下需先安装 `libssl-dev` 和 `libcurl4-openssl-dev`
 

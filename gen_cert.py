@@ -84,7 +84,7 @@ def gen_signed_cert(domain,
                 cert.get_subject().L = "127.0.0.1"
                 cert.get_subject().O = "TProxy"
                 cert.get_subject().OU = domain
-                cert.gmtime_adj_notBefore(0)
+                cert.gmtime_adj_notBefore(-3 * 24 * 60 * 60)
                 cert.gmtime_adj_notAfter(365 * 24 * 60 * 60)
                 cert.set_serial_number(serial)
                 cert.set_issuer(ca_cert.get_subject())
